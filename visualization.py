@@ -28,8 +28,8 @@ def languages_statistic(answers):
     # plt.title('Programming language usage')
     #
     # plt.show()
-
     # TODO: napraviti dva dijagrama od kojih prvi pokazuje koji je jezik koliko zastupljen a drugi koliko je opala-porasla popularnost nekog jezika u zavisnosti od toga da li hoce da rade sa njim
+
 
 def salary_statistic(answers):
     plt.rcdefaults()
@@ -37,7 +37,18 @@ def salary_statistic(answers):
     salary_stat = [(ans['ConvertedSalary'], ans['YearsCodingProf']) for user, ans in answers.items()]
     print(salary_stat)
 
-    # TODO: napraviti dijagram koji pokazuje odnos plate i godina rada
+    # TODO: napraviti grafik frekvencije koji pokazuje odnos plate i godina rada
 
 
-# TODO: generalno treba ovde jos neki density plot da se odradi
+def operating_system_statistic(answers):
+    plt.rcdefaults()
+
+    os = [ans['OperatingSystem'] for user, ans in answers.items()]
+    os_count = {k: os.count(k) for k in set(os)}
+    print(os_count)
+
+
+def gender_statistic(answers):
+    gen = [ans['Gender'] for user, ans in answers.items()]
+    gender = {k: gen.count(k) for k in set(gen)}
+    print(gender)
