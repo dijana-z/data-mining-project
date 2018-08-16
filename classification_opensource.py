@@ -1,16 +1,17 @@
-import pandas as pd
 import numpy as np
-from sklearn.preprocessing import LabelEncoder
-from sklearn.svm import LinearSVC
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
 
 
 def data_preprocessor(answers):
     ans = list(answers.values())
-    wanted_ans = ['Hobby', 'OperatingSystem', 'YearsCoding', 'OpenSource', 'StackOverflowConsiderMember',
-                  'HoursComputer', 'StackOverflowHasAccount', 'StackOverflowParticipate']
+    wanted_ans = ['OpenSource', 'OperatingSystem', 'VersionControl', 'Hobby', 'Student', 'Employment',
+                  'StackOverflowHasAccount', 'StackOverflowConsiderMember', 'StackOverflowParticipate',
+                  'StackOverflowDevStory']
     ans_final = {key: [] for key in wanted_ans}
 
     for wanted in wanted_ans:
@@ -19,8 +20,6 @@ def data_preprocessor(answers):
 
     pd.set_option('display.expand_frame_repr', False)
     df = pd.DataFrame.from_dict(ans_final)
-    df = df[df.StackOverflowConsiderMember != "I'm not sure"]
-    print(df['OpenSource'].unique())
     print('Classification dataframe')
     print(df.head())
     print(df.describe())
@@ -32,7 +31,7 @@ def data_preprocessor(answers):
     y = df['OpenSource']
     x = df[df.columns.drop(['OpenSource']).tolist()]
 
-    x = np.array(x).reshape(-1, 7)
+    x = np.array(x).reshape(-1, 9)
     y = np.array(y).reshape(-1, 1)
 
     X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
@@ -40,15 +39,15 @@ def data_preprocessor(answers):
     return X_train, X_test, y_train, y_test
 
 
-def support_vector_classifier(answers):
+def random_forest_classifier(answers):
     """
-    Predicts if the user contributes to Open Source
+    Classifies users into categories based on whether they contribute to Open Source or not
     """
     X_train, X_test, y_train, y_test = data_preprocessor(answers)
-    clf = LinearSVC()
+    clf = RandomForestClassifier()
     clf.fit(X_train, y_train.ravel())
     res = clf.predict(X_test)
 
-    print('Support vector classification results:\n')
+    print('Random forest classification results:\n')
     print(classification_report(res, y_test))
     print(confusion_matrix(y_test, res))
