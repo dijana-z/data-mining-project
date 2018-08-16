@@ -6,7 +6,7 @@ fields_needed = ['Respondent', 'Hobby', 'OpenSource', 'Country', 'Student', 'Emp
                  'AgreeDisagree1', 'AgreeDisagree2', 'AgreeDisagree3', 'LanguageWorkedWith', 'LanguageDesireNextYear',
                  'IDE', 'OperatingSystem', 'AIDangerous', 'AIInteresting', 'AIResponsible', 'AIFuture',
                  'StackOverflowRecommend', 'StackOverflowVisit', 'Age', 'StackOverflowHasAccount',
-                 'StackOverflowConsiderMember', 'HoursComputer', 'Gender']
+                 'StackOverflowConsiderMember', 'HoursComputer', 'Gender', 'CheckInCode', 'StackOverflowParticipate']
 
 
 def read_public_csv(file_path):

@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from sklearn.neural_network import MLPClassifier
-from sklearn.svm import SVC, LinearSVC
+from sklearn.svm import LinearSVC
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
@@ -20,6 +20,7 @@ def data_preprocessor(answers):
 
     pd.set_option('display.expand_frame_repr', False)
     df = pd.DataFrame.from_dict(ans_final)
+    df = df[df.StackOverflowConsiderMember != "I'm not sure"]
     print('Classification dataframe')
     print(df.head())
     print(df.describe())
