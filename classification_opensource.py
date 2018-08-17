@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
@@ -49,5 +50,19 @@ def random_forest_classifier(answers):
     res = clf.predict(X_test)
 
     print('Random forest classification results:\n')
+    print(classification_report(res, y_test))
+    print(confusion_matrix(y_test, res))
+
+
+def neural_network_classifier(answers):
+    """
+    Classifies users into categories based on whether they contribute to Open Source or not
+    """
+    X_train, X_test, y_train, y_test = data_preprocessor(answers)
+    clf = MLPClassifier(solver='lbfgs')
+    clf.fit(X_train, y_train.ravel())
+    res = clf.predict(X_test)
+
+    print('Neural network classification results:\n')
     print(classification_report(res, y_test))
     print(confusion_matrix(y_test, res))
