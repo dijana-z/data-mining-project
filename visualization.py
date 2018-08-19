@@ -1,5 +1,11 @@
+from collections import Counter
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+import plotly.plotly as py
+import plotly.graph_objs as go
+from plotly import tools
+import pycountry
 
 
 def language_statistics(answers):
@@ -83,3 +89,53 @@ def ai_sentiments(answers):
     plt.xticks(X, ai_neutral.keys(), fontsize=5)
     plt.title("AI Sentiments", fontsize=17)
     plt.show()
+
+
+def country_map(file_path):
+    """
+    Displays users per country on a world map
+    -- taken from https://www.kaggle.com/ranjeetjain3/stack-over-flow-results --
+    """
+    df = pd.read_csv(path, sep=',', low_memory=False, error_bad_lines=False, index_col=False, dtype='unicode')
+    countries = df['Country'].value_counts()
+
+    countries = countries.to_frame().reset_index()
+    countries.loc[2]['code'] = 'test'
+
+    for i,country in enumerate(countries['index']):
+        user_input = country
+        mapping = {country.name: country.alpha_3 for country in pycountry.countries}
+        countries.set_value(i, 'code', mapping.get(user_input))
+    data = [ dict(
+            type = 'choropleth',
+            locations = countries['code'],
+            z = countries['Country'],
+            text = countries['index'],
+            colorscale = [[0,"rgb(5, 10, 172)"],[0.35,"rgb(40, 60, 190)"],[0.5,"rgb(70, 100, 245)"],\
+                [0.6,"rgb(90, 120, 245)"],[0.7,"rgb(106, 137, 247)"],[1,"rgb(220, 220, 220)"]],
+            autocolorscale = False,
+            reversescale = True,
+            marker = dict(
+                line = dict (
+                    color = 'rgb(180,180,180)',
+                    width = 0.5
+                ) ),
+            colorbar = dict(
+                autotick = False,
+                tickprefix = '',
+                title = 'Total Count'),
+          ) ]
+
+    layout = dict(
+        title = 'countries which responded to the survey',
+        geo = dict(
+            showframe = False,
+            showcoastlines = False,
+            projection = dict(
+                type = 'Mercator'
+            )
+        )
+    )
+
+    fig = dict( data=data, layout=layout )
+    py.plot( fig, validate=False)
