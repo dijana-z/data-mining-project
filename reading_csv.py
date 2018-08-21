@@ -1,12 +1,11 @@
 import pandas as pd
 
 
-fields_needed = ['Respondent', 'Hobby', 'OpenSource', 'Country', 'Student', 'Employment', 'FormalEducation', 'DevType',
-                 'YearsCoding', 'YearsCodingProf', 'JobSatisfaction', 'CareerSatisfaction', 'ConvertedSalary',
-                 'AgreeDisagree1', 'AgreeDisagree2', 'AgreeDisagree3', 'LanguageWorkedWith', 'LanguageDesireNextYear',
-                 'IDE', 'OperatingSystem', 'AIDangerous', 'AIInteresting', 'AIResponsible', 'AIFuture',
-                 'StackOverflowRecommend', 'StackOverflowVisit', 'Age', 'StackOverflowHasAccount',
-                 'StackOverflowConsiderMember', 'HoursComputer', 'Gender', 'CheckInCode', 'StackOverflowParticipate']
+fields_needed = ['Respondent', 'Hobby', 'OpenSource', 'Country', 'Student', 'Employment', 'DevType',
+                 'YearsCoding', 'YearsCodingProf', 'CareerSatisfaction', 'ConvertedSalary', 'Age', 'AIFuture',
+                 'LanguageWorkedWith', 'LanguageDesireNextYear', 'IDE', 'VersionControl', 'OperatingSystem',
+                 'StackOverflowDevStory', 'StackOverflowRecommend', 'StackOverflowVisit', 'StackOverflowHasAccount',
+                 'StackOverflowConsiderMember', 'StackOverflowParticipate']
 
 
 def read_public_csv(file_path):
@@ -19,9 +18,9 @@ def read_public_csv(file_path):
 
     # data analysis
     print('\n~ Public DataFrame:\n')
-    print(f'{df.head()}\n\n')
-    print(f'{df.count()}\n\n')
-    print(f'{df.describe()}\n\n')
+    print('{}\n\n'.format(df.head()))
+    print('{}\n\n'.format(df.count()))
+    print('{}\n\n'.format(df.describe()))
 
     # eliminating NA values
     df = df.dropna()
@@ -45,13 +44,13 @@ def read_schema_csv(file_path):
     """
     :return: returns a dictionary of questions in the survey
     """
-    df = pd.read_csv(file_path)
+    df = pd.read_csv(file_path, dtype='unicode')
 
     # data analysis
     print('~ Schema DataFrame:\n')
-    print(f'{df.head()}\n\n')
-    print(f'{df.count()}\n\n')
-    print(f'{df.describe()}\n\n')
+    print('{}\n\n'.format(df.head()))
+    print('{}\n\n'.format(df.count()))
+    print('{}\n\n'.format(df.describe()))
 
     # eliminating NA values
     df = df.dropna()
@@ -63,4 +62,3 @@ def read_schema_csv(file_path):
     questions = {key: question_info[key] for key in wanted_keys}
 
     return questions
-
