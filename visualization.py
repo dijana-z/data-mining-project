@@ -6,6 +6,12 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 from plotly import tools
 import pycountry
+from random import shuffle
+
+
+colors = ['#FF5733', '#FFCE33', '#71E381', '#B8E371', '#E39971', '#9DD0A8', '#8AEBC2',
+          '#1BA794', '#57A9BD', '#98A8CA', '#424C76', '#D995F9', '#6D2A8B', '#FD33F1',
+          '#EB8EBC', '#9D2F7A', '#A51B49', '#B7101F', '#FE8590', '#DAF7A6', '#F3B28F']
 
 
 def hobby_pie_plot(answers):
@@ -20,9 +26,10 @@ def hobby_pie_plot(answers):
     explode = (0, 0.1)
 
     fig1, ax1 = plt.subplots()
-    ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
+    ax1.pie(sizes, colors=colors, explode=explode, autopct='%1.1f%%',
         shadow=True, startangle=90)
     ax1.axis('equal')
+    plt.legend(labels=labels)
     plt.title('Do they code as a hobby?')
     plt.show()
 
@@ -38,8 +45,9 @@ def student_pie_plot(answers):
     sizes = [st_count[l] for l in labels]
 
     fig1, ax1 = plt.subplots()
-    ax1.pie(sizes, labels=labels, autopct='%1.1f%%',shadow=True, startangle=90)
+    ax1.pie(sizes, colors=colors, autopct='%1.1f%%',shadow=True, startangle=90)
     ax1.axis('equal')
+    plt.legend(labels=labels)
     plt.title('Are they students?')
     plt.show()
 
@@ -55,8 +63,9 @@ def employment_pie_plot(answers):
     sizes = [em_count[l] for l in labels]
 
     fig1, ax1 = plt.subplots()
-    ax1.pie(sizes, labels=labels, autopct='%1.1f%%',shadow=True, startangle=90)
+    ax1.pie(sizes, colors=colors, autopct='%1.1f%%', pctdistance=1.1, shadow=True, startangle=90)
     ax1.axis('equal')
+    plt.legend(labels=labels)
     plt.title('Are they employed?')
     plt.show()
 
@@ -111,22 +120,46 @@ def country_map(file_path):
     py.plot( fig, validate=False)
 
 
-# TODO: proveri sto ne radi govno
 def devtype_statistics(answers):
     """
     Plots the developer type of people who participated in the survey
     """
     plt.rcdefaults()
-    data_needed = [ans['DevType'] for user, ans in answers.items()]
-    dt_count = {k: data_needed.count(k) for k in set(data_needed)}
-    devtypes = list(dt_count.keys())
-    y_pos = np.arange(len(devtypes))
-    dt = sorted([dt_count[l] for l in devtypes], reverse=True)
-    devtypes = [l for _,l in sorted(zip(dt, devtypes), reverse=True)]
 
-    plt.bar(y_pos, dt, align='center', alpha=0.5)
-    plt.xticks(y_pos, devtypes, rotation='vertical', fontsize=5.5)
-    plt.title('Developer type of people who participated in the survey')
+    devs = [item for sublist in list(ans['DevType'].split(';') for user, ans in answers.items()) for
+                 item in sublist]
+    dev_count = {k: devs.count(k) for k in set(devs)}
+
+    dev = list(dev_count.keys())
+    y_pos = np.arange(len(dev))
+    usage = sorted([dev_count[l] for l in dev], reverse=True)
+    dev = [l for _,l in sorted(zip(usage,dev), reverse=True)]
+
+
+    plt.bar(y_pos, usage, color=colors, align='center', alpha=0.5)
+    plt.xticks(y_pos, dev, rotation='vertical', fontsize=5.5)
+    plt.ylabel('Usage')
+    plt.title('Developer Type')
+    plt.show()
+
+
+def age_statistics(answers):
+    """
+    Plots the age of people who participated in the survey
+    """
+    plt.rcdefaults()
+    shuffle(colors)
+
+    data_needed = [ans['Age'] for user, ans in answers.items()]
+    age_count = {k: data_needed.count(k) for k in set(data_needed)}
+    age = list(age_count.keys())
+    y_pos = np.arange(len(age))
+    a = sorted([age_count[l] for l in age], reverse=True)
+    age = [l for _,l in sorted(zip(a, age), reverse=True)]
+
+    plt.bar(y_pos, a, align='center', alpha=0.5, color=colors)
+    plt.xticks(y_pos, age, fontsize=10)
+    plt.title('Age of people who participated in the survey')
     plt.show()
 
 
@@ -141,9 +174,10 @@ def career_satisfaction_pie(answers):
     sizes = [cs_count[l] for l in labels]
 
     fig1, ax1 = plt.subplots()
-    ax1.pie(sizes, labels=labels, autopct='%1.1f%%',
+    ax1.pie(sizes, autopct='%1.1f%%', colors=colors,
         shadow=True, startangle=90)
     ax1.axis('equal')
+    plt.legend(labels=labels)
     plt.title('Career satisfaction')
     plt.show()
 
@@ -159,7 +193,7 @@ def yearscoding_pie_plot(answers):
     sizes = [yc_count[l] for l in labels]
 
     fig1, ax1 = plt.subplots()
-    ax1.pie(sizes, autopct='%1.1f%%',
+    ax1.pie(sizes, autopct='%1.1f%%', colors=colors,
         shadow=True, startangle=90)
     ax1.axis('equal')
     plt.legend(labels=labels)
@@ -181,7 +215,7 @@ def yearscodingprof_pie_plot(answers):
     sizes = [yc_count[l] for l in labels]
 
     fig1, ax1 = plt.subplots()
-    ax1.pie(sizes, autopct='%1.1f%%',
+    ax1.pie(sizes, autopct='%1.1f%%', colors=colors,
         shadow=True, startangle=90)
     ax1.axis('equal')
     plt.legend(labels=labels)
@@ -208,7 +242,7 @@ def language_statistics(answers):
     langs = [l for _,l in sorted(zip(usage,langs), reverse=True)]
 
 
-    plt.bar(y_pos, usage, align='center', alpha=0.5)
+    plt.bar(y_pos, usage, color=colors, align='center', alpha=0.5)
     plt.xticks(y_pos, langs, rotation='vertical', fontsize=5.5)
     plt.ylabel('Usage')
     plt.title('Programming language usage')
@@ -219,9 +253,8 @@ def language_statistics(answers):
     l_desire_count = {k: l_desire.count(k) for k in set(l_desire)}
 
     subtracted_usage = sorted([l_desire_count[l] - lang_count[l] for l in langs])
-    plt.bar(y_pos, subtracted_usage, align='center', alpha=0.5)
+    plt.bar(y_pos, subtracted_usage, color=colors, align='center', alpha=0.5)
     plt.xticks(y_pos, langs, rotation='vertical', fontsize=5.5)
-    plt.ylabel('Usage')
     plt.title('Programming language future popularity')
     plt.show()
 
@@ -265,12 +298,12 @@ def ai_sentiments(answers):
 
     X = np.arange(len(ai_positive))
     ax = plt.subplot(111)
-    ax.bar(X - 0.3, ai_negative.values(), width=0.2, color='r', align='center')
-    ax.bar(X, ai_neutral.values(), width=0.2, color='b', align='center')
-    ax.bar(X + 0.3, ai_positive.values(), width=0.2, color='g', align='center')
+    ax.bar(X - 0.3, ai_negative.values(), width=0.2, color='#c11515', align='center')
+    ax.bar(X, ai_neutral.values(), width=0.2, color='#4660e2', align='center')
+    ax.bar(X + 0.3, ai_positive.values(), width=0.2, color='#529b39', align='center')
 
     ax.legend(('Negative', 'Neutral', 'Positive'))
-    plt.xticks(X, ai_neutral.keys(), fontsize=5)
+    plt.xticks(X, ai_neutral.keys(), fontsize=10)
     plt.title("AI Sentiments", fontsize=17)
     plt.show()
 
@@ -295,29 +328,6 @@ def opensource_pie_plot(answers):
     p.gca().add_artist(my_circle)
     plt.title('Do they contribute to Open Source?')
     plt.show()
-
-
-def opensource_and_hobby(file_path):
-    """
-    'Do you contribute to Open Source?' answers based on if they code as a hobby
-    """
-    df = pd.read_csv(file_path, sep=',', low_memory=False, error_bad_lines=False, index_col=False, dtype='unicode')
-    data = df[['Hobby','OpenSource']].dropna()
-
-    trace1 = go.Bar(
-        x=['Yes', 'No'],
-        y=[data[(data['OpenSource'] == 'Yes') & (data['Hobby'] == 'Yes')].count()[0], data[(data['OpenSource'] == 'Yes') & (data['Hobby'] == 'No')].count()[0]],
-        name='Yes',
-        opacity=0.6
-    )
-
-    data = [trace1]
-    layout = go.Layout(
-        barmode='group'
-    )
-
-    fig = go.Figure(data=data, layout=layout)
-    py.plot(fig)
 
 
 def opensource_and_operatingsystem(answers):
