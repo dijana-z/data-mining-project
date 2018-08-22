@@ -1,5 +1,5 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 import random
 from sklearn.linear_model import LinearRegression
 from sklearn.neural_network import MLPRegressor
